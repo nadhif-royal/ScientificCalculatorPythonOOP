@@ -1,0 +1,137 @@
+# Scientific Calculator using Object Oriented Programming
+# by Nadhif Rif'at Rasendriya
+
+import math
+
+# Super Class / Parent Class
+class Calculator:
+    def __init__(self, angka1, angka2):
+        self.angka1 = angka1
+        self.angka2 = angka2
+
+    def tambah(self):
+        return self.angka1 + self.angka2
+
+    def kurang(self):
+        return self.angka1 - self.angka2
+
+    def kali(self):
+        return self.angka1 * self.angka2
+
+    def bagi(self):
+        return self.angka1 / self.angka2 if self.angka2 != 0 else "Error: Division by Zero!"
+
+
+# Sub Class / Child Class
+class Scientific(Calculator):
+    def sin(self, angka):
+        return math.sin(math.radians(angka))
+
+    def cos(self, angka):
+        return math.cos(math.radians(angka))
+
+    def tan(self, angka):
+        return math.tan(math.radians(angka))
+
+    def power(self, base, exp):
+        return base ** exp  # Lebih pythonic daripada math.pow()
+
+    def penjumlahan_sin(self):
+        return self.tambah() + self.sin(self.angka1) + self.sin(self.angka2)
+
+
+def menu_utama():
+    print("\nPilih Jenis Kalkulator:")
+    print("1. Original Calculator")
+    print("2. Scientific Calculator")
+    print("3. Keluar")
+    return input("Masukkan pilihan (1/2/3): ")
+
+
+def menu_calculator():
+    print("\nPilih Operasi:")
+    print("1. Tambah")
+    print("2. Kurang")
+    print("3. Kali")
+    print("4. Bagi")
+    return input("Masukkan pilihan (1/2/3/4): ")
+
+
+def menu_scientific():
+    print("\nPilih Operasi:")
+    print("1. Sin")
+    print("2. Cos")
+    print("3. Tan")
+    print("4. Power (Pangkat)")
+    return input("Masukkan pilihan (1/2/3/4): ")
+
+
+# Implementation
+while True:
+    pilihan = menu_utama()
+
+    if pilihan == "3":
+        print("Thank you! Sampai jumpa lagi.")
+        break
+
+    try:
+        angka1 = float(input("\nMasukkan angka pertama: "))
+        angka2 = float(input("Masukkan angka kedua: "))
+    except ValueError:
+        print("Error: Masukkan angka yang valid!")
+        continue
+
+    if pilihan == "1":  
+        calc = Calculator(angka1, angka2)
+        operasi = menu_calculator()
+
+        operasi_dict = {
+            "1": ("Tambah", calc.tambah()),
+            "2": ("Kurang", calc.kurang()),
+            "3": ("Kali", calc.kali()),
+            "4": ("Bagi", calc.bagi()),
+        }
+
+        hasil = operasi_dict.get(operasi, None)
+        if hasil:
+            print(f"Hasil {hasil[0]}: {hasil[1]}")
+        else:
+            print("Pilihan tidak valid!")
+
+    elif pilihan == "2": 
+        sci_calc = Scientific(angka1, angka2)  
+        operasi = menu_scientific()
+
+        if operasi in ["1", "2", "3"]:  # trigonometri
+            try:
+                angka = float(input("Masukkan angka yang ingin dihitung: "))
+            except ValueError:
+                print("Error: Masukkan angka yang valid!")
+                continue
+
+            fungsi_trigonometri = {
+                "1": ("Sin", sci_calc.sin(angka)),
+                "2": ("Cos", sci_calc.cos(angka)),
+                "3": ("Tan", sci_calc.tan(angka)),
+            }
+            hasil = fungsi_trigonometri.get(operasi, None)
+            if hasil:
+                print(f"{hasil[0]}({angka}°): {hasil[1]}")
+            else:
+                print("Pilihan tidak valid!")
+
+        elif operasi == "4":
+            print(f"{angka1}^{angka2}: {sci_calc.power(angka1, angka2)}")
+
+        else:
+            print("Pilihan tidak valid!")
+
+        print(f"\nPenjumlahan dari sin {angka1} + sin {angka2} adalah {sci_calc.penjumlahan_sin()}")
+
+    else:
+        print("Pilihan tidak valid!")
+
+    ulang = input("\nIngin melakukan perhitungan lagi? (yes/no): ").lower()
+    if ulang != "yes":
+        print("Thank you!")
+        break
