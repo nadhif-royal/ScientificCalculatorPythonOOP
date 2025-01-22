@@ -34,7 +34,7 @@ class Scientific(Calculator):
         return math.tan(math.radians(angka))
 
     def power(self, base, exp):
-        return base ** exp  # Lebih pythonic daripada math.pow()
+        return base ** exp  
 
     def penjumlahan_sin(self):
         return self.tambah() + self.sin(self.angka1) + self.sin(self.angka2)
